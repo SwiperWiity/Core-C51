@@ -1,0 +1,7 @@
+".\Objects\STARTUP.obj",
+".\Objects\i2c.obj",
+".\Objects\test.obj",
+".\Objects\delay.obj",
+".\Objects\OLED.obj" 
+TO ".\Objects\test" 
+PRINT(".\Listings\test.m51") RAMSIZE(256) 

@@ -1,0 +1,130 @@
+C51 COMPILER V9.54   I2C                                                                   07/04/2020 18:19:22 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE I2C
+OBJECT MODULE PLACED IN .\Objects\i2c.obj
+COMPILER INVOKED BY: D:\MDK5\C51\BIN\C51.EXE i2c.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\i2c.lst)
+                    - OBJECT(.\Objects\i2c.obj)
+
+line level    source
+
+   1          #include "i2c.h"
+   2          #include "stc15.h"
+   3          #include "delay.h"
+   4          
+   5          sbit IIC_SCL = P4 ^ 1;
+   6          sbit IIC_SDA = P4 ^ 0;
+   7          
+   8          
+   9          void IIC_Start (void)
+  10          {
+  11   1              IIC_SDA = 1;
+  12   1              IIC_SCL = 1;
+  13   1              Delayx0us(1);
+  14   1              IIC_SDA = 0;            //下降的起始信号
+  15   1              Delayx0us(1);
+  16   1              IIC_SCL = 0;
+  17   1      }
+  18          
+  19          
+  20          char IIC_ACK (void)
+  21          {
+  22   1              char count = 0;
+  23   1              IIC_SCL = 0;
+  24   1              IIC_SDA = 0;
+  25   1              Delayx0us(1);
+  26   1              IIC_SDA = 1;
+  27   1              while(IIC_SDA)
+  28   1              {
+  29   2                      count++;
+  30   2                      Delayx0us(1);
+  31   2                      if(count >= 10)
+  32   2                      {
+  33   3                              //IIC_Stop ();
+  34   3                              IIC_SCL = 1;
+  35   3                              Delayx0us(1);
+  36   3                              return 0;
+  37   3                      }
+  38   2              }
+  39   1              IIC_SCL = 1;
+  40   1              Delayx0us(1);
+  41   1              return 1;
+  42   1      }
+  43          
+  44          void IIC_Stop (void)
+  45          {
+  46   1              IIC_SDA = 0;
+  47   1              IIC_SCL = 0;
+  48   1              Delayx0us(1);
+  49   1              IIC_SCL = 1;
+  50   1              Delayx0us(1);
+  51   1              IIC_SDA = 1;            //下降的起始信号
+  52   1              Delayx0us(1);
+  53   1      }
+  54          
+C51 COMPILER V9.54   I2C                                                                   07/04/2020 18:19:22 PAGE 2   
+
+  55          void IIC_Wite_Bit (unsigned char x)
+  56          {
+  57   1              char n;
+  58   1              IIC_SCL = 0;
+  59   1              Delayx0us(1);
+  60   1              for(n = 0;n < 8;n++)
+  61   1              {
+  62   2                      IIC_SCL = 0;
+  63   2                      if((x << n) & 0x80) IIC_SDA = 1;
+  64   2                      else IIC_SDA = 0;
+  65   2                      Delayx0us(1);
+  66   2                      IIC_SCL = 1;
+  67   2                      Delayx0us(1);
+  68   2              }
+  69   1              IIC_ACK ();
+  70   1      }
+  71          
+  72          unsigned char IIC_Read_Bit (void)
+  73          {
+  74   1              unsigned char n,m;
+  75   1              for(n = 0;n < 8;n++)
+  76   1              {
+  77   2                      while(!IIC_SCL);
+  78   2                      Delayx0us(1);
+  79   2                      m <<= n;
+  80   2                      if(IIC_SDA == 1)
+  81   2                      {
+  82   3                              m |= 1;
+  83   3                      }
+  84   2                      else
+  85   2                      {
+  86   3                              m |= 0; 
+  87   3                      }
+  88   2                      while(IIC_SCL);
+  89   2                      Delayx0us(1);
+  90   2              }
+  91   1              return m;
+  92   1      }
+  93          
+  94          void IIC_Write (unsigned char x,const unsigned char *y)
+  95          {
+  96   1              unsigned char n = 0;
+  97   1              IIC_Start ();
+  98   1              IIC_Wite_Bit (*(y + n) & 0xfe);         //写地址
+  99   1              for(n = 1;n < x;n++)
+ 100   1              {
+ 101   2                      IIC_Wite_Bit (*(y + n));
+ 102   2              }
+ 103   1              IIC_Stop ();
+ 104   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    282    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      10
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

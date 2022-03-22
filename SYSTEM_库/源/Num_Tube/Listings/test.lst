@@ -1,0 +1,101 @@
+C51 COMPILER V9.54   TEST                                                                  06/16/2020 23:52:47 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE TEST
+OBJECT MODULE PLACED IN .\Objects\test.obj
+COMPILER INVOKED BY: D:\MDK5\C51\BIN\C51.EXE test.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\test.ls
+                    -t) OBJECT(.\Objects\test.obj)
+
+line level    source
+
+   1          #include "stc8.h"
+   2          #include "intrins.h"
+   3          #include "Digital.h"
+   4          
+   5          char w,n= 0;
+   6          int p = 1234;
+   7          void Timer0Init(void);
+   8          void main (void)
+   9          {
+  10   1              unsigned char i, j, k;
+  11   1              Timer0Init();
+  12   1              EA = 1;
+  13   1              while(1)
+  14   1              {
+  15   2                      p = 314;
+  16   2                      _nop_();
+  17   2                      _nop_();
+  18   2                      i = 210;
+  19   2                      j = 34;
+  20   2                      k = 153;
+  21   2                      do
+  22   2                      {
+  23   3                              do
+  24   3                              {
+  25   4                                      while (--k);
+  26   4                              } while (--j);
+  27   3                      } while (--i);
+  28   2                      
+  29   2                      
+  30   2                      p = 1592;
+  31   2                      _nop_();
+  32   2                      _nop_();
+  33   2                      i = 210;
+  34   2                      j = 34;
+  35   2                      k = 153;
+  36   2                      do
+  37   2                      {
+  38   3                              do
+  39   3                              {
+  40   4                                      while (--k);
+  41   4                              } while (--j);
+  42   3                      } while (--i);
+  43   2                      
+  44   2                      p = 6;
+  45   2                      _nop_();
+  46   2                      _nop_();
+  47   2                      i = 210;
+  48   2                      j = 34;
+  49   2                      k = 153;
+  50   2                      do
+  51   2                      {
+  52   3                              do
+  53   3                              {
+  54   4                                      while (--k);
+C51 COMPILER V9.54   TEST                                                                  06/16/2020 23:52:47 PAGE 2   
+
+  55   4                              } while (--j);
+  56   3                      } while (--i);
+  57   2                      
+  58   2              }
+  59   1      }
+  60          
+  61          void TIM0_IRQ(void)     interrupt 1
+  62          {
+  63   1              Shou_Digital (p);
+  64   1      }
+  65          
+  66          void Timer0Init(void)           //5毫秒@24.000MHz
+  67          {
+  68   1              AUXR &= 0x7F;           //定时器时钟12T模式
+  69   1              TMOD &= 0xF0;           //设置定时器模式
+  70   1              TL0 = 0xF0;             //设置定时初值
+  71   1              TH0 = 0xD8;             //设置定时初值
+  72   1              TF0 = 0;                //清除TF0标志
+  73   1              TR0 = 1;                //定时器0开始计时
+  74   1              ET0 = 1;
+  75   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    149    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

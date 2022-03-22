@@ -1,0 +1,13 @@
+C51 COMPILER V9.54   NUM_TUBE                                                              06/16/2020 21:24:17 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE NUM_TUBE
+OBJECT MODULE PLACED IN .\Objects\Num_Tube.obj
+COMPILER INVOKED BY: D:\MDK5\C51\BIN\C51.EXE Num_Tube.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Num
+                    -_Tube.lst) OBJECT(.\Objects\Num_Tube.obj)
+
+line level    source
+
+*** ERROR C318 OF Num_Tube.c: can't open file 'Num_Tube.c'
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

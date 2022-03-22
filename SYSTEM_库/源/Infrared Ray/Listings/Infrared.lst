@@ -1,0 +1,26 @@
+C51 COMPILER V9.54   INFRARED                                                              06/19/2020 10:51:27 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE INFRARED
+OBJECT MODULE PLACED IN .\Objects\Infrared.obj
+COMPILER INVOKED BY: D:\MDK5\C51\BIN\C51.EXE Infrared.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Inf
+                    -rared.lst) OBJECT(.\Objects\Infrared.obj)
+
+line level    source
+
+   1          #include "infrared.h"
+   2          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

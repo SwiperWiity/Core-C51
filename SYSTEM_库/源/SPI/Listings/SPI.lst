@@ -1,0 +1,99 @@
+C51 COMPILER V9.54   SPI                                                                   07/04/2020 16:38:36 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE SPI
+OBJECT MODULE PLACED IN .\Objects\SPI.obj
+COMPILER INVOKED BY: D:\MDK5\C51\BIN\C51.EXE SPI.C OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\SPI.lst)
+                    - OBJECT(.\Objects\SPI.obj)
+
+line level    source
+
+   1          #include "spi.h"
+   2          #include "delay.h"
+   3          #include "REG52.h"
+   4          
+   5          
+   6          sbit MOSI = P1 ^ 7;
+   7          sbit MISO = P1 ^ 6;
+   8          sbit SCLK = P1 ^ 5;
+   9          sbit CS   = P1 ^ 4;
+  10          
+  11          char SPI_array_r[20];
+  12          char SPI_array_s[20];
+  13          
+  14          char SPI2_Write_And_Read_Byte(char dat)                         //master
+  15          {
+  16   1              char ret_data;
+  17   1              char n,m;
+  18   1              MOSI = 1;
+  19   1              SCLK = 1;
+  20   1              m = 0x80;
+  21   1              CS   = 0;
+  22   1              Delayx0us(5);
+  23   1              for(n = 0;n < 8;n++)
+  24   1              {
+  25   2                      SCLK = 0;
+  26   2                      MOSI = 0x80 & (dat << n);
+  27   2                      Delayx0us(1);
+  28   2                      _nop_();
+  29   2                      SCLK = 1;
+  30   2                      if(MISO == 1) ret_data |= (0x80 >> n);
+  31   2                      else          ret_data |= (0x00 >> n);
+  32   2                      Delayx0us(1);
+  33   2                      _nop_();
+  34   2                      
+  35   2              }
+  36   1              MOSI = 1;
+  37   1              SCLK = 1;
+  38   1              CS   = 1;
+  39   1              return ret_data;
+  40   1      }
+  41          
+  42          char SPI_Read_And_Write (char dat)                                              //Slave
+  43          {
+  44   1              char ret_data = 0;
+  45   1              unsigned char n,m;
+  46   1              if(CS == 0)
+  47   1              {
+  48   2                      m = 0x80;
+  49   2                      MISO = 1;
+  50   2                      for(n = 0;n < 8;n++)
+  51   2                      {
+  52   3                              while(SCLK);
+  53   3                              MISO = 0x80 & (dat << n);                                       //Slave OUT
+  54   3                              while(!SCLK);
+C51 COMPILER V9.54   SPI                                                                   07/04/2020 16:38:36 PAGE 2   
+
+  55   3                              if(MOSI == 1)   ret_data |= (m >> n);
+  56   3                      }
+  57   2                      MISO = 1;
+  58   2              }
+  59   1              return ret_data;
+  60   1      }
+  61          
+  62          char *SPI_Write_And_Read (const char * x,char y)
+  63          {
+  64   1              char n;
+  65   1              CS = 0;
+  66   1              for(n = 0;n < y;n++)
+  67   1              {
+  68   2                      SPI_array_r[n] = SPI2_Write_And_Read_Byte(*(x + n));
+  69   2              }
+  70   1              CS = 1;
+  71   1              return SPI_array_r;
+  72   1      }
+  73          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    247    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     40       9
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
